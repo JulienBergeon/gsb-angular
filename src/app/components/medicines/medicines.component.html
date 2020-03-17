@@ -1,5 +1,5 @@
 
-<app-search-bar (searchChanged)="getMedicines(paginator.pageIndex, paginator.pageSize, $event)"></app-search-bar>
+<app-search-bar (searchChanged)="searchChanged($event)"></app-search-bar>
 
 <mat-list role="list">
     <mat-list-item role="listitem" *ngFor="let medicine of medicines; let lastOne = last">
@@ -15,7 +15,7 @@
 
 <mat-paginator #paginator="matPaginator" 
                 [length]="paginator.length"
-                [pageIndex]="paginator.pageIndex"
-                [pageSize]="paginator.pageSize" 
+                [pageIndex]="pageIndex"
+                [pageSize]="pageSize"
                 [pageSizeOptions]="[5, 10]"
                 (page)="pageChange($event)"></mat-paginator>
