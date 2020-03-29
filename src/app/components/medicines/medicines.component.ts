@@ -34,6 +34,14 @@ export class MedicinesComponent implements OnInit {
 
     //À l'initialisation du composant on "pagine" nos éléments
     this.displayedMedicines = this.listSrv.paginateElements<MedicinesInterface>(this.medicaments, this.paginatorInfo);
+
+    this.form = this.formBuilder.group({
+      name: [''],
+      description: [''],
+      price: [''],
+      image: [''],
+      });
+
   }
 
   //Méthode déclenchée lorsqu'une recherche est faite dans notre composant de recherche
