@@ -38,6 +38,7 @@ export class LoginComponent implements OnInit {
         email: this.form.value.email,
         password: this.form.value.password
       };
+      
       this.authService.postAuthLogin(credentials).toPromise().then(
         (token: TokenDto) => {
           this.cookieSrv.setItem('token', token.access_token);
@@ -48,6 +49,7 @@ export class LoginComponent implements OnInit {
     } else {
       this.snackBar.open("Email incorrect.", 'OK', this.snackConfig)
     }
+    
     
   }
 
