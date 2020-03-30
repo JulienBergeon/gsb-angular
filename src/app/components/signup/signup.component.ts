@@ -3,6 +3,7 @@ import { ApiService } from 'src/app/services/api/api.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { environment } from 'src/environments/environment';
 import { UserDTO } from 'src/model/userDto';
+import { AuthService } from '../../api/services/auth.service'
 
 @Component({
   selector: 'app-signup',
@@ -19,7 +20,8 @@ export class SignupComponent implements OnInit {
 
   constructor( 
     private readonly api: ApiService,
-    private readonly fb: FormBuilder
+    private readonly fb: FormBuilder,
+    private readonly as: AuthService
   ) { }
 
   ngOnInit() {
@@ -55,7 +57,8 @@ export class SignupComponent implements OnInit {
       // this.newUser.gender = user.gender;
       // this.newUser.address = user.address;
       //console.log(this.newUser.firstName);
-      this.api.put(`auth/signup`, user).toPromise().then(sucess => console.log(sucess), error=> console.log(error));
+      //this.api.put(`auth/signup`, user).toPromise().then(sucess => console.log(sucess), error=> console.log(error));
+      this.as.putAuthSignup(user).toPromise().then(sucess => console.log(sucess), error=> console.log(error));
     }
   }
 }
