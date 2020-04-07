@@ -5,6 +5,6 @@ export interface CreateUserDto {
   firstName: string;
   lastName: string;
   address: string;
-  role: 'Patient' | 'Doctor';
+  role: 'Commercial' | 'Doctor';
   gender: 'Male' | 'Female';
 }

@@ -1,4 +1,4 @@
-import { NgModule } from "@angular/core";
+import { NgModule } from '@angular/core';
 import { MatListModule } from '@angular/material/list';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSidenavModule } from '@angular/material/sidenav';
@@ -12,6 +12,7 @@ import {MatDividerModule} from '@angular/material/divider';
 import {MatPaginatorModule, MatPaginatorIntl} from '@angular/material/paginator';
 import { LayoutModule } from '@angular/cdk/layout';
 import { FrenchPaginatorIntlService } from './services/french-paginator-intl/french-paginator-intl.service';
+import { MatFormFieldModule } from '@angular/material/form-field';
 
 const modules = [
     LayoutModule,
@@ -25,12 +26,14 @@ const modules = [
     MatIconModule,
     MatListModule,
     MatDividerModule,
-    MatPaginatorModule
+    MatPaginatorModule,
+    MatFormFieldModule,
+    MatCardModule,
 ];
 
 @NgModule({
-    imports: modules, 
-    exports: modules, 
+    imports: modules,
+    exports: modules,
     providers: [{provide: MatPaginatorIntl, useClass: FrenchPaginatorIntlService}]
 })
-export class MaterialModule { }
+export class MaterialModule {}

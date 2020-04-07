@@ -17,7 +17,6 @@ class UsersService extends __BaseService {
   static readonly getUsersPath = '/users';
   static readonly putUsersPath = '/users';
   static readonly getUsersMePath = '/users/me';
-  static readonly getUsersPatientsPath = '/users/patients';
   static readonly getUsersDoctorsPath = '/users/doctors';
   static readonly getUsersIdPath = '/users/{id}';
   static readonly postUsersIdPath = '/users/{id}';
@@ -129,39 +128,6 @@ class UsersService extends __BaseService {
   getUsersMe(): __Observable<UserDto> {
     return this.getUsersMeResponse().pipe(
       __map(_r => _r.body as UserDto)
-    );
-  }
-
-  /**
-   * @return Patients found
-   */
-  getUsersPatientsResponse(): __Observable<__StrictHttpResponse<Array<UserDto>>> {
-    let __params = this.newParams();
-    let __headers = new HttpHeaders();
-    let __body: any = null;
-    let req = new HttpRequest<any>(
-      'GET',
-      this.rootUrl + `/users/patients`,
-      __body,
-      {
-        headers: __headers,
-        params: __params,
-        responseType: 'json'
-      });
-
-    return this.http.request<any>(req).pipe(
-      __filter(_r => _r instanceof HttpResponse),
-      __map((_r) => {
-        return _r as __StrictHttpResponse<Array<UserDto>>;
-      })
-    );
-  }
-  /**
-   * @return Patients found
-   */
-  getUsersPatients(): __Observable<Array<UserDto>> {
-    return this.getUsersPatientsResponse().pipe(
-      __map(_r => _r.body as Array<UserDto>)
     );
   }
 

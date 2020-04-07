@@ -16,13 +16,12 @@ import { ProfileComponent } from './components/profile/profile.component';
 import { HomeComponent } from './components/home/home.component';
 import { SearchBarComponent } from './components/search-bar/search-bar.component';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { ApiService } from './services/api/api.service';
 import { LoginComponent } from './components/login/login.component';
 import { SignupComponent } from './components/signup/signup.component';
-import { FlexLayoutModule } from "@angular/flex-layout";
+import { FlexLayoutModule } from '@angular/flex-layout';
 import { ToolbarComponent } from './components/toolbar/toolbar.component';
 import { CookieModule } from '@ngx-toolkit/cookie';
-import { TokenInterceptorService } from '../app/services/auth/guards/token-interceptor-service'
+import { TokenInterceptorService } from '../app/services/auth/guards/token-interceptor-service';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 
 @NgModule({
@@ -56,7 +55,6 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
   ],
   providers: [
     ListDataService,
-    ApiService,
     MatSnackBar,
     {
       provide: HTTP_INTERCEPTORS,
