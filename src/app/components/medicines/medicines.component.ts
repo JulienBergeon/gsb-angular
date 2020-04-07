@@ -81,11 +81,17 @@ export class MedicinesComponent implements OnInit {
     //la fonction est appelé en fonction de delete ou post, mais toujours users/+id
     this.apim.delete('medicines/'+id, id).toPromise().then(sucess => console.log(sucess), error=> console.log(error));
     
+    //test refresh
+    const index: number = this.displayedMedicines.indexOf(this.displayedMedicines.find(element => element.id === id));
+    if (index !== -1) {
+        this.displayedMedicines.splice(index, 1);
+    } 
+
     //maj de la liste ?
-    this.apim.get('medicines/all').toPromise()
-      .then(success => console.log(success), error => console.log(error));
-    this.paginatorInfo = {pageSize: 10, pageIndex: 0, length: this.medicaments.length};
-    this.displayedMedicines = this.listSrv.paginateElements<MedicinesInterface>(this.medicaments, this.paginatorInfo);
+    // this.apim.get('medicines/all').toPromise()
+    //   .then(success => console.log(success), error => console.log(error));
+    // this.paginatorInfo = {pageSize: 10, pageIndex: 0, length: this.medicaments.length};
+    // this.displayedMedicines = this.listSrv.paginateElements<MedicinesInterface>(this.medicaments, this.paginatorInfo);
   }
 
   onSubmit(){
@@ -94,6 +100,10 @@ export class MedicinesComponent implements OnInit {
     const med = this.form.value;
     console.log(med);
     this.apim.put(`medicines`, med).toPromise().then(sucess => console.log(sucess), error=> console.log(error));
+    
+    //test refresh
+    this.displayedMedicines.push(med);
+
   }
 
 }
