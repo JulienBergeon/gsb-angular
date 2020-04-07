@@ -1,13 +1,10 @@
+import { CreateMedicinesDto } from './../../api/models/create-medicines-dto';
+import { MedicinesDto } from './../../api/models/medicines-dto';
 import { Component, OnInit } from '@angular/core';
-import { MedicinesInterface } from 'src/model/medicines.interface';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { PageEvent } from '@angular/material/paginator';
 import { ListService } from 'src/app/services/list/list.service';
-import { ApiService } from 'src/app/services/api/api.service';
-
-import { HttpBackend } from '@angular/common/http';
-import { NgForm, FormBuilder, FormGroup } from '@angular/forms';
-import { identifierModuleUrl } from '@angular/compiler';
-
+import { MedicinesService } from 'src/app/api/services';
 
 @Component({
   selector: 'app-medicines',
@@ -16,94 +13,72 @@ import { identifierModuleUrl } from '@angular/compiler';
 })
 export class MedicinesComponent implements OnInit {
 
-  public form: FormGroup;
-
-  constructor(private readonly listSrv: ListService, 
-    private readonly apim: ApiService, 
-    private formBuilder: FormBuilder) { this.form = this.formBuilder.group({name:'', description:''});
-    this.apim.get('medicines/all').subscribe(data => {this.medicaments = data as MedicinesInterface[], console.log(data), this.displayedMedicines = this.medicaments});
-  }
-
-  medicaments : MedicinesInterface[] = [];
-  displayedMedicines = []; //La liste qui est liée à la vue (celle qui est affichée)
+  form: FormGroup;
+  medicaments : MedicinesDto[] = [];
+  displayedMedicines = [];
   paginatorInfo: PageEvent = {pageSize: 10, pageIndex: 0, length: this.medicaments.length};
 
-  ngOnInit() {
-    this.apim.get(`medicines/all`).toPromise()
-      .then(success => console.log(success), error => console.log(error));
 
-    //À l'initialisation du composant on "pagine" nos éléments
-    this.displayedMedicines = this.listSrv.paginateElements<MedicinesInterface>(this.medicaments, this.paginatorInfo);
-
-    this.form = this.formBuilder.group({
-      name: [''],
-      description: [''],
-      price: [''],
-      image: [''],
+  constructor(
+    private readonly listSrv: ListService,
+    private readonly medicineService: MedicinesService,
+    private formBuilder: FormBuilder) {
+      this.form = this.formBuilder.group({
+        name: [''],
+        description: [''],
+        price: [''],
+        image: [''],
       });
-
   }
 
-  //Méthode déclenchée lorsqu'une recherche est faite dans notre composant de recherche
-  search(query: string): void { 
-    //Si la recherche est vide on affecte tous les éléments à la liste que l'on affiche
+  ngOnInit() {
+    this.getMedicines();
+  }
+
+  getMedicines() {
+    this.medicineService.getMedicinesAll().toPromise().then(
+      medicines => {
+        this.medicaments = medicines;
+        this.displayedMedicines = this.listSrv.paginateElements<MedicinesDto>(this.medicaments, this.paginatorInfo);
+      }
+    );
+  }
+
+  search(query: string): void {
     this.displayedMedicines = this.medicaments;
 
-    //Sinon on filtre les éléments dont le nom ou le prénom ne commence pas par la chaîne recherchée 
     if (query !== ''){
       this.displayedMedicines = this.medicaments.filter((medicament) => {
 
-        const len = query.length; // On récupère la taille de la chaîne recherchée
-        const name = medicament.name.substr(0, len).toLocaleLowerCase(); // On crée une sous chaîne du prénom de la même taille que celle recherchée
+        const len = query.length;
+        const name = medicament.name.substr(0, len).toLocaleLowerCase();
 
-        //On vérifie ensuite l'égalité des chaînes (on transforme ces chaînes en minuscule pour ne pas être sensible à la casse)
-        const nameMatched = name === query.toLowerCase(); 
+        const nameMatched = name === query.toLowerCase();
 
-        //On conserve les éléments si la sous-chaîne créée avec le prénom ou celle créée avec le nom correspond
         return nameMatched;
       });
-    } 
+    }
 
-    this.paginatorInfo.pageIndex = 0; //On remet la paginateur à la première page
-    this.paginatorInfo.length = this.displayedMedicines.length; //On affecte la taille des éléments trouvés à la taille du paginateur
-    this.displayedMedicines = this.listSrv.paginateElements<MedicinesInterface>(this.displayedMedicines, this.paginatorInfo); // On pagine nos éléments qui correspondent à la recherche
+    this.paginatorInfo.pageIndex = 0;
+    this.paginatorInfo.length = this.displayedMedicines.length; 
+    this.displayedMedicines = this.listSrv.paginateElements<MedicinesDto>(this.displayedMedicines, this.paginatorInfo); 
   }
 
-  //Méthode déclenchée lorsque l'utilisateur change de page ou change la taille du paginateur
   pageChange(event: PageEvent): void {
-    this.paginatorInfo = event; //On met à jour la variable qui contient les informations du paginateur
-    this.displayedMedicines = this.listSrv.paginateElements<MedicinesInterface>(this.medicaments, this.paginatorInfo); // On pagine nos éléments affichés
+    this.paginatorInfo = event;
+    this.displayedMedicines = this.listSrv.paginateElements<MedicinesDto>(this.medicaments, this.paginatorInfo);
   }
 
-  delete(id){
-    console.log(id);
-    console.log('medicines/'+id);
-    //la fonction est appelé en fonction de delete ou post, mais toujours users/+id
-    this.apim.delete('medicines/'+id, id).toPromise().then(sucess => console.log(sucess), error=> console.log(error));
-    
-    //test refresh
-    const index: number = this.displayedMedicines.indexOf(this.displayedMedicines.find(element => element.id === id));
-    if (index !== -1) {
-        this.displayedMedicines.splice(index, 1);
-    } 
-
-    //maj de la liste ?
-    // this.apim.get('medicines/all').toPromise()
-    //   .then(success => console.log(success), error => console.log(error));
-    // this.paginatorInfo = {pageSize: 10, pageIndex: 0, length: this.medicaments.length};
-    // this.displayedMedicines = this.listSrv.paginateElements<MedicinesInterface>(this.medicaments, this.paginatorInfo);
+  delete(id: number): void {
+    this.medicineService.deleteMedicinesId(id).toPromise().then(
+      () => this.getMedicines()
+    );
   }
 
-  onSubmit(){
-    console.log("oui");
-    console.log("non");
-    const med = this.form.value;
-    console.log(med);
-    this.apim.put(`medicines`, med).toPromise().then(sucess => console.log(sucess), error=> console.log(error));
-    
-    //test refresh
-    this.displayedMedicines.push(med);
-
+  onSubmit() {
+    const med: CreateMedicinesDto = this.form.value;
+    this.medicineService.putMedicines(med).toPromise().then(
+      () => this.getMedicines()
+    );
   }
-
 }

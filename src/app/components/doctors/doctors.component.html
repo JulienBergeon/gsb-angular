@@ -1,52 +1,15 @@
-<!-- Notre composant barre de recherche -->
-<!-- Lorsqu'une recherche est éffectuée la méthode search est appelée -->
 <app-search-bar (searchChanged)="search($event)"></app-search-bar>
-
-<!-- La liste des éléments affichés qui dans l'idéal devrait être dans un composant à part -->
-<!-- <form class="example-form" name="form" [formGroup]="form" (ngSubmit)="onSubmit()" >
-      <input formControlName="fn">
-
-      <input formControlName="ln">
-      <button class="btn btn-primary" type="submit"><img src = "assets/addButton.png" style="width:40px; height:40px;"/></button> -->
- <!-- <button (click)="addDoc(addnewdoc)"><img src = "assets/addButton.png" style="width:40px; height:40px;"/></button> -->
-<!-- </form> -->
-<!-- <mat-card class="box">
-        
-    <mat-card-header>
-        <mat-card-title>Ajout medecin</mat-card-title>
-    </mat-card-header>
-
-<form class="example-form" name="form" [formGroup]="form"  (ngSubmit)="onSubmit()" >
-    <mat-card-content>
-        
-        <mat-form-field class="example-full-width" color="accent">
-            <input matInput placeholder="Prenom" formControlName="fn">
-        </mat-form-field>
-
-        <mat-form-field class="example-full-width" color="accent">
-            <input matInput placeholder="Nom" formControlName="ln">
-        </mat-form-field>
-
-    </mat-card-content>
-
-    <button mat-stroked-button color="accent" class="btn-block" type="submit">Ajouter médicament</button> -->
- <!-- <button (click)="addDoc(addnewdoc)"><img src = "assets/addButton.png" style="width:40px; height:40px;"/></button> -->
-<!-- </form>
-</mat-card> -->
 
 <mat-list role="list">
     <mat-list-item role="listitem" *ngFor="let doctor of displayedDoctors; let lastOne = last">
         <img [src]="doctor.cheminImage" style="width:40px; height:40px; padding-right: 15px;"/>
         {{doctor.firstName}} {{doctor.lastName}}
         <button (click)="delete(doctor.id)" style="margin: 15px;" type="button">Supprimer</button>
-        <!-- Le séparateur que l'on affiche pas pour le dernier élément de la liste -->
         <mat-divider *ngIf="!lastOne"></mat-divider>
     </mat-list-item>
     
 </mat-list>
 
-<!-- Le paginateur -->
-<!-- Au changement de page ou de taille du paginateur la méthode pageChange est appelée -->
 <mat-paginator  [length]="paginatorInfo.length"
                 [pageIndex]="paginatorInfo.pageIndex"
                 [pageSize]="paginatorInfo.pageSize" 

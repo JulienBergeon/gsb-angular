@@ -5,7 +5,7 @@ export interface UserDto {
   firstName: string;
   lastName: string;
   address: string;
-  role: 'Patient' | 'Doctor';
+  role: 'Commercial' | 'Doctor';
   gender: 'Male' | 'Female';
   doctors?: Array<number>;
 }
