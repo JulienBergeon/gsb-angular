@@ -8,6 +8,7 @@ import { UsersService } from './services/users.service';
 import { MedicinesService } from './services/medicines.service';
 import { AppointmentsService } from './services/appointments.service';
 import { AuthService } from './services/auth.service';
+import { MeetingsService } from './services/meetings.service';
 
 /**
  * Provider for all Api services, plus ApiConfiguration
@@ -26,7 +27,8 @@ import { AuthService } from './services/auth.service';
     UsersService,
     MedicinesService,
     AppointmentsService,
-    AuthService
+    AuthService,
+    MeetingsService
   ],
 })
 export class ApiModule {

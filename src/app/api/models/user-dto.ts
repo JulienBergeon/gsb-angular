@@ -1,4 +1,5 @@
 /* tslint:disable */
+import { MedicinesDto } from './medicines-dto';
 export interface UserDto {
   id: number;
   email: string;
@@ -7,5 +8,5 @@ export interface UserDto {
   address: string;
   role: 'Commercial' | 'Doctor';
   gender: 'Male' | 'Female';
-  doctors?: Array<number>;
+  medicines: Array<MedicinesDto>;
 }

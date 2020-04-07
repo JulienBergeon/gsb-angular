@@ -3,3 +3,4 @@ export { UsersService } from './services/users.service';
 export { MedicinesService } from './services/medicines.service';
 export { AppointmentsService } from './services/appointments.service';
 export { AuthService } from './services/auth.service';
+export { MeetingsService } from './services/meetings.service';
